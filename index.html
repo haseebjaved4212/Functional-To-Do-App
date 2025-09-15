@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List </title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #f3f4f6;
+            --container-bg: #fff;
+            --text-main: #222;
+            --text-secondary: #555;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --task-bg: #f1f5f9;
+            --task-complete: #9ca3af;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        [data-theme="dark"] {
+            --bg: #18181b;
+            --container-bg: #23232b;
+            --text-main: #fafafa;
+            --text-secondary: #a3a3a3;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --task-bg: #27272a;
+            --task-complete: #52525b;
+            --shadow: 0 4px 12px rgba(30, 41, 59, 0.2);
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .loading::after {
+            content: '...';
+            animation: dot-loading 1s linear infinite;
+        }
+        @keyframes dot-loading {
+            0%   { content: ''; }
+            33%  { content: '.'; }
+            66%  { content: '..'; }
+            100% { content: '...'; }
+        }
+        /* Theme and Animations */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            transition: background-color var(--transition);
+        }
+        .container {
+            background: var(--container-bg);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+        h1, h2 {
+            color: var(--text-main);
+            transition: color var(--transition);
+        }
+        .theme-toggle {
+            outline: none;
+            border: none;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+            transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform 0.2s;
+        }
+        .theme-toggle:hover {
+            background: var(--accent-hover);
+            transform: scale(1.06) rotate(-2deg);
+        }
+        .task-anim {
+            animation: task-pop-in 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes task-pop-in {
+            0% { opacity: 0; transform: scale(0.92) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .task-leave {
+            animation: task-pop-out 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes task-pop-out {
+            0% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.92) translateY(30px); }
+        }
+        .transition-theme {
+            transition: background-color var(--transition), color var(--transition);
+        }
+        .loading::after {
+            content: '...';
+            animation: dot-loading 1s linear infinite;
+        }
+        @keyframes dot-loading {
+            0%   { content: ''; }
+            33%  { content: '.'; }
+            66%  { content: '..'; }
+            100% { content: '...'; }
+        }
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="container w-full max-w-lg p-6 sm:p-8 rounded-3xl transition-theme">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-2 text-center">To-Do List</h1>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">🌙</button>
+        </div>
+        
+        
+        <!-- Form to add a new task (Simulated POST request) -->
+        <form id="addTaskForm" class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+            <input 
+                id="taskInput"
+                type="text" 
+                placeholder="Add a new task..." 
+                class="w-full sm:flex-grow p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            >
+            <button 
+                type="submit" 
+                id="addTaskBtn"
+                class="w-full sm:w-auto bg-zinc-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-200 text-sm sm:text-base"
+            >
+                Add Task
+            </button>
+        </form>
+
+        <!-- To-Do List Display Area -->
+        <div class="flex items-center justify-between mb-3 sm:mb-4">
+            <h2 class="text-lg sm:text-xl font-semibold text-blue-700">Tasks</h2>
+            <span id="loading-status" class="text-gray-500 hidden">Loading...</span>
+        </div>
+        
+        <ul id="taskList" class="space-y-2 sm:space-y-3">
+            <!-- Tasks will be rendered here -->
+        </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

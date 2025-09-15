@@ -17,7 +17,7 @@ A modern, stylish, and fully interactive To-Do List web application built with p
 
 ## Preview
 
-[To-Do App ]()
+[To-Do App ](https://haseebjaved4212.github.io/Functional-To-Do-App/)
 
 ---
 
